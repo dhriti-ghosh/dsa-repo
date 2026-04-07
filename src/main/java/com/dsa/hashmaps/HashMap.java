@@ -1,9 +1,6 @@
 package com.dsa.hashmaps;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class HashMap {
 
@@ -16,6 +13,15 @@ public class HashMap {
         int[] arr = {1, 1, 1, 2, 2, 3};
         int[] topK = toKFrequent(arr, 2);
         System.out.println(Arrays.toString(topK));
+
+        String[] strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
+        groupAnagrams(strs).forEach(
+                group -> {
+                    System.out.println("[");
+                    group.forEach(System.out::println);
+                    System.out.println("]");
+                }
+        );
 
     }
 
@@ -61,4 +67,26 @@ public class HashMap {
         }
         return pq.stream().mapToInt(i -> i).toArray();
     }
+
+    /*
+    Time O(n·k log k) Space O(n·k)
+    Group Anagrams — core idea
+    Anagrams share the same sorted characters.
+    Use sorted(word) as a HashMap key.
+    All words mapping to the same key belong together.
+    O(n · k log k) where k = max word length. No comparisons between words needed.
+     */
+
+    public static List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> groups = new java.util.HashMap<>();
+        for(String str : strs) {
+            char[] arr = str.toCharArray();
+            Arrays.sort(arr);
+            String key = String.valueOf(arr);
+            groups.computeIfAbsent(key, k -> new ArrayList<>()).add(str);
+        }
+        return new ArrayList<>(groups.values());
+    }
+
+
 }
