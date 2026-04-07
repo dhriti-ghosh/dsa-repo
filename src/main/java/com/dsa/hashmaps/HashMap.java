@@ -1,5 +1,10 @@
 package com.dsa.hashmaps;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.PriorityQueue;
+
 public class HashMap {
 
     public static void main(String[] args) {
@@ -8,10 +13,14 @@ public class HashMap {
         String s2 = "itiDhr";
         System.out.println(s1 + " and " + s2 + " are anagrams: " + isAnagram(s1, s2));
 
+        int[] arr = {1, 1, 1, 2, 2, 3};
+        int[] topK = toKFrequent(arr, 2);
+        System.out.println(Arrays.toString(topK));
+
     }
 
 
-    /* O(n)
+    /* Time O(n) Space O(1)
      Valid Anagram — core idea
      Count character frequencies in both strings.
      If every character count matches, they're anagrams.
@@ -26,5 +35,30 @@ public class HashMap {
         for (char c : s2.toLowerCase().toCharArray()) freq[c - 'a']--;
         for (int i : freq) if (i != 0) return false;
         return true;
+    }
+
+    /*
+    Top K Frequent Elements — core idea
+    Step 1: count frequencies with a HashMap.
+    Step 2: use a min-heap of size K — if heap grows beyond K, evict the minimum.
+    Result: the K survivors are the most frequent. O(n log k) —
+    much better than sorting at O(n log n) when k is small.
+
+    Time O(n log k)
+    Space O(n + k)
+    Vs normal Sort O(n log n)
+     */
+
+    public static int[] toKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> freq = new java.util.HashMap<>();
+        //V merge(K key, V value, BiFunction<V, V, V> remappingFunction)
+        //merge() combines an existing value with a new value using a function.
+        for (int num : nums) freq.merge(num, 1, Integer::sum);
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.comparing(freq::get));
+        for (int num : freq.keySet()) {
+            pq.offer(num);
+            if (pq.size() > k) pq.poll();
+        }
+        return pq.stream().mapToInt(i -> i).toArray();
     }
 }
