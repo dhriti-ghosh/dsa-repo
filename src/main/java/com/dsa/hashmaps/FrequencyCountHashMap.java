@@ -2,7 +2,7 @@ package com.dsa.hashmaps;
 
 import java.util.*;
 
-public class HashMap {
+public class FrequencyCountHashMap {
 
     public static void main(String[] args) {
 

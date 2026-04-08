@@ -34,7 +34,7 @@ O(n*n) = O(n^2)
 for (int i = 0; i < n; i++) {
     for (int j = i; j < n; j++)
 ```
-Not n² fully → still simplifies to O(n²)
+Not n^2 fully, still simplifies to O(n^2)
 
 ### Logarithmic patterns
 ```java
@@ -58,3 +58,26 @@ for (int i = 0; i < n; i++) {
     for (int j = 0; j < k; j++)
 ```
 O(n * k)
+
+## How to Calculate Space Complexity
+
+```java
+int sum = 0;
+```
+Only one variable O(1)
+
+```java
+int[] arr = new int[n];
+```
+Storing n elements O(n)
+
+```java
+int f(int n) {
+    if (n == 0) return 0;
+    return f(n - 1);
+}
+```
+Recursion - stack depth n O(n)
+
+1. Always take the worst case
+2. Drop constants (2n = n) and lower terms ( n + n^2 = n^2)
