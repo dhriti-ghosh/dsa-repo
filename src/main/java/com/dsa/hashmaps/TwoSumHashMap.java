@@ -21,6 +21,10 @@ public class TwoSumHashMap {
             System.out.print("]  ");
 
         });
+
+        nums = new int[] {3, 4, -2, 5, 1, -1, 2, -3, 6, -2, 4, 2};
+        System.out.println(countSubarraysWithSum(nums, 6));
+
     }
 
     /*
@@ -50,6 +54,7 @@ public class TwoSumHashMap {
     Rearranges to: a = b + diff.
     So for each number b, check if b + diff exists in the set.
     Store all numbers first, then scan — or do it in one pass if duplicates are handled carefully.
+    Time: O(n) Space: O(n)
      */
     public  static List<int[]> pairsWithDiff(int[] nums, int diff) {
         Set<Integer> set = new HashSet<>();
@@ -60,6 +65,30 @@ public class TwoSumHashMap {
                 res.add(new int[]{diff + num, num});
         }
         return res;
+    }
+
+    /*
+    Given an array nums and an integer k, count the number of subarrays whose sum equals k
+    Subarray Sum = K — prefix sum + map
+    sum(i..j) = prefixSum[j] − prefixSum[i−1].
+    So we need prefixSum[j] − K to have appeared before.
+    Store each prefix sum's count in a map.
+    Initialize map with {0 → 1} (empty subarray).
+    Every time prefixSum − K is in the map, we found that many subarrays ending here.
+    Time: O(n) Space: O(n)
+     */
+
+    public static int countSubarraysWithSum(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int sum = 0;
+        int count = 0;
+        for (int i : nums){
+            sum += i;
+            count += map.getOrDefault(sum - k, 0);
+            map.merge(sum, 1, Integer::sum);
+        }
+        return count;
     }
 }
 
